@@ -1,8 +1,8 @@
-import { useSelector, connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import TodoList from '../components/TodoList';
 
 function TodoListContainer() {
-  const todos = useSelector((state) => state);
+  const todos = useSelector((state) => state.todos);
   return <TodoList todos={todos} />;
 }
 
