@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { put, call, delay, takeEvery } from 'redux-saga/effects';
 
 export const GET_USERS_START = "GET_USERS_START";
 export const GET_USERS_SUCCESS = "GET_USERS_SUCCESS";
@@ -60,4 +61,27 @@ export function getUsersPromise() {
       return res.data;
     }
   }
+}
+
+const GET_USERS_SAGA_START = 'GET_USERS_SAGA_START';
+
+export function* getUsersSaga(action) {
+  try {
+    yield put(getUsersStart());
+    const res = yield call(axios.get, "https://api.github.com/users");
+    yield put(getUsersSuccess(res.data));
+  } catch(error) {
+    yield put(getUsersFailed(error));
+  }
+}
+
+export function getUsersSagaStart() {
+  return {
+    type: GET_USERS_SAGA_START
+  }
+}
+
+export function* usersSaga() {
+  yield takeEvery('123', () => {});
+  yield takeEvery(GET_USERS_SAGA_START, getUsersSaga);
 }
